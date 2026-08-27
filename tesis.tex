@@ -7,6 +7,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
 \usepackage[left=3cm,right=3cm,bottom=3.5cm,top=3.5cm]{geometry}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{hyperref}
+\usepackage{doi}
+\bibliographystyle{plainnat}
 
 \newcommand{\until}{\text{ }\mathcal{U}\text{ }}
 \newcommand{\release}{\text{ }\mathcal{R}\text{ }}
@@ -59,6 +63,8 @@
 
 %%%% BIBLIOGRAFIA
 \backmatter
-%\bibliography{tesis}
+\cleardoublepage
+\addcontentsline{toc}{chapter}{\bibname}
+\bibliography{tesis}
 
 \end{document}

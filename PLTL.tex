@@ -27,7 +27,7 @@ De estos símbolos se desprenden las definiciones:
 
 Estos últimos símbolos son parte del lenguaje LTL al que tiene acceso el usuario, pero el parser los transforma inmediatamente a su equivalente con los operadores de la primera tabla.
 
-[] utiliza los operadores $\top, \neg, \wedge, \next, \until$, y agrega los operadores de pasado:
+\citet{pnueli93} utiliza los operadores $\top, \neg, \wedge, \next, \until$, y agrega los operadores de pasado:
 
 \[
 	\begin{array}{|l l l}
@@ -55,7 +55,7 @@ Por simplicidad, MTSA mantiene siempre las fórmulas en forma normal negada, es 
 	\end{array}
 \]
 
-Queda claro entonces que es necesario que todo operador tenga un dual. Para todos los operadores de futuro ya presentes, existe en el lenguaje un dual ($\until$ y $\release$ son duales, y $\next$ es su propio dual). Pero [] no presenta operadores duales para los símbolos de pasado que introduce.
+Queda claro entonces que es necesario que todo operador tenga un dual. Para todos los operadores de futuro ya presentes, existe en el lenguaje un dual ($\until$ y $\release$ son duales, y $\next$ es su propio dual). Pero \citet{pnueli93} no presenta operadores duales para los símbolos de pasado que introduce.
 
 Para el $\since$, agregamos al lenguaje su dual $\trigger$, definido como:
 
@@ -76,4 +76,4 @@ A diferencia de su equivalente de futuro, no es verdad que $\prev$ es su propio 
 
 Es interesante notar que, evaluados en cualquier momento que no es el inicial, $\prev$ y $\weakprev$ son equivalentes.
 
-Agregando $\trigger$ y $\weakprev$ a los operadores usados en [] y MTSA, obtenemos un lenguaje de lógica temporal con operadores de pasado y futuro que podemos mantener en forma normal negada.
+Agregando $\trigger$ y $\weakprev$ a los operadores usados en \citet{pnueli93} y MTSA, obtenemos un lenguaje de lógica temporal con operadores de pasado y futuro que podemos mantener en forma normal negada.

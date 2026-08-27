@@ -5,3 +5,10 @@
 *.fls
 *.gz
 *.toc
+
+# BibTeX
+*.bbl
+*.blg
+*.bcf
+*.out
+*.run.xml
