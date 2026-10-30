@@ -1,0 +1,40 @@
+\newcommand{\conj}{$\Phi_{N,L,P}$}
+\newcommand{\mconj}{\Phi_{N,L,P}}
+
+\chapter{Experimentación}
+
+El principal objetivo de la experimentación de este trabajo es comparar la eficiencia y utilidad del nuevo algoritmo implementado en relación al algoritmo preexistente en MTSA. Además de verificar la correctitud de la implementación. Para esto analizamos distintas métricas.
+
+\section{Generación aleatoria de fórmulas}
+
+Usamos una generación aleatoria de fórmulas inspirada en \citet{randomBenchmark} para usar en distintas experimentaciones. Para las fórmulas de puro futuro, se usa el conjunto de operadores $\{\neg, \next, \vee, \wedge, \until, \weaku\}$. Para las fórmulas con operadores de pasado se agregan los operadores $\{\prev, \weakprev, \since, \trigger\}$.
+
+La generación de fórmulas es paramétrica respecto a variables $N, L,$ y $P$. Se genera una fórmula de tamaño exáctamente $L$ con un alfabeto de tamaño $N$ con el siguiente procedimiento.
+
+\begin{itemize}
+	\item Si $L = 1$, devolver una fórmula que consiste en un símbolo elegido uniformemente en el alfabeto.
+	\item Si $L = 2$, elegir uniformemente al azar un operador $op$ entre los unarios y un símbolo $p$ en el alfabeto. Devolver $op(p)$.
+	\item Si $L > 2$, se decide con probabilidad $P$ si el próximo operador a elegir es temporal dual o no. Es decir, si se tiene el conjunto de operadores $\{\neg, \next, \prev, \weakprev, \vee, \wedge, \until, \weaku, \since, \trigger\}$ hay una probabilidad $P$ de que $op$ se elija uniformemente en $\{\until, \weaku, \since, \trigger\}$ y probabilidad $1-P$ de elegirlo entre el resto de operadores. En caso de que el operador elegido sea unario, se crea recursivamente una fórmula al azar $\psi$ de tamaño $L-1$ y se devuelve $op(\psi)$. Si $op$ es binario, se elige uniformemente un $1 \leq S \leq L - 2$, se generan dos fórmulas $\psi_1, \psi_2$ de tamaño $S$ y $L-S-1$ respectivamente, y se devuelve $op(\psi_1, \psi_2)$.
+\end{itemize}
+
+Se puede observar que cuando $P$ es igual a la proporción de operadores temporales duales en el conjunto, los operadores se eligen uniformemente.
+
+Dado unos parámetros $N, L,$ y $P$, y un conjunto de operadores, se generan $F$ fórmulas distintas para obtener un conjunto de fórmulas a evaluar.
+
+\section{Evaluación temporal y del tamaño del autómata}
+
+Seguimos la experimentación de \citet{randomBenchmark} con el objetivo de analizar las diferencias de tiempo de ejecución y de tamaño de autómata entre distintos algoritmos. Para eso generamos conjuntos de fórmulas para distintos valores de $N,L,P$ con $F=100$, a cada conjunto lo llamamos \conj.
+
+Para comparar la variable $\theta$ (por ejemplo, cantidad de aristas, o tiempo de ejecución) entre dos algoritmos $x$ e $y$, generamos un \conj \ y, para cada $\varphi \in \mconj$, generamos el autómata para $\neg\varphi$ usando el algoritmo $x$, después guardamos el promedio de todos los $\theta$ de esa generación en $\theta_x$. Hacemos lo mismo para generar $\theta_y$.
+
+Una vez calculados $\theta_x$ y $\theta_y$ calculamos $\frac{\theta_y}{\theta_x}$ como medida de ``cuánto mejor es el algoritmo $x$ sobre el $y$ en el parámetro $\theta$``. Como medimos parámetros que queremos minimizar, un valor mayor a 1 de $\frac{\theta_y}{\theta_x}$ indica que $x$ presenta una mejora sobre $y$, mientras que un valor menor a 1 indica lo contrario.
+
+Dados dos algoritmos y un parámetro a medir, exploramos el espacio de posibilidades de $N,L,P$ y hacemos esta medición para cada valor.
+
+Particularmente nos interesa analizar la diferencia en tiempo de ejecución, cantidad de estados, y cantidad de aristas entre el algoritmo ya implementado en MTSA y esta nueva implementación. Como el trabajo de esta tesis no es una optimización sino una extensión del lenguaje lógico, no esperamos mejoras en ninguno de estos parámetros. Más bien buscamos determinar la magnitud de sus diferencias. Para esta evaluacion no usamos operadores de pasado para poder comparar la misma fórmula en los dos algoritmos.
+
+También nos interesa analizar la magnitud de las optimizaciones presentadas sobre herencia selectiva de aristas en \citet{pnueli93}. Para eso, medimos la cantidad de aristas en el algoritmo con estas optimizaciones y sin ellas. 
+
+Por último, queremos caracterizar la mejora que trajo la programación dinámica en la corrección de aristas. Como el autómata resultante es el mismo, analizamos solamente el tiempo de ejecución del algoritmo con la memoización y sin la memoización. 
+
+Para estos últimos dos experimentos sí usamos los operadores de pasado.
